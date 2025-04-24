@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puppeteer Detection</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Function to detect if browser is likely Puppeteer or similar headless browser
+    function isPuppeteerLike() {
+      // Collect various signals that might indicate a headless browser
+      const signals = [
+        // Check for navigator.webdriver flag (often true in automated browsers)
+        !!navigator.webdriver,
+        
+        // Check for missing or empty languages (common in headless browsers)
+        !navigator.languages || navigator.languages.length === 0,
+        
+        // Check for plugins (typically empty in headless browsers)
+        navigator.plugins.length === 0,
+        
+        // Check user agent for headless indicators
+        /headless|phantomjs|puppeteer|selenium|webdriver/i.test(navigator.userAgent),
+        
+        // Connection properties often reveal automation
+        navigator.connection && navigator.connection.rtt === 0,
+        
+        // Chrome automation-related properties
+        !!window.domAutomation || !!window.domAutomationController
+      ];
+      
+      // If any signals are true, it might be a headless browser
+      return signals.some(signal => signal === true);
+    }
+    
+    // Set background color based on detection
+    document.body.style.backgroundColor = isPuppeteerLike() ? 'green' : 'red';
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
